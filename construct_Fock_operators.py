@@ -1,8 +1,8 @@
 """
     A library that contains functions for constructing fermionic creation, annihilation and related operators as
-    (sparse) matricies.
+    (sparse) matrices.
 
-    The library assumes a basis ordered such that the occupation number of the nth single partilce state (in some single
+    The library assumes a basis ordered such that the occupation number of the nth single particle state (in some single
     particle basis) corresponds to the value of the nth bit in the index of each many-body state (indexes starting from
     0, the vacuum). States are created from the vacuum by applying creation operators in order from the first single
     particle state to the last (that is from least to most significant bit)
@@ -11,7 +11,7 @@
 import scipy.sparse as spr
 
 
-def _anticomutation_factor(many_particle_state: int, initial_position: int, final_position: int) -> int:
+def _anticommutation_factor(many_particle_state: int, initial_position: int, final_position: int) -> int:
     """
     Calculate the sign factor needed to move an operator from initial_position to final_position in the sequence
     of creation operators that create many_particle_state from the vacuum, assuming that it anticommutes with all
@@ -47,7 +47,7 @@ def creation(basis_size: int, state_index: int) -> spr.csc_matrix:
     for state_to_act_on in range(many_particle_basis_size):
         if ~state_to_act_on & single_particle_state_mask:
             temp_matrix[state_to_act_on | single_particle_state_mask, state_to_act_on] = (
-                _anticomutation_factor(state_to_act_on, basis_size, state_index)
+                _anticommutation_factor(state_to_act_on, basis_size, state_index)
             )
 
     return temp_matrix.tocsc()
